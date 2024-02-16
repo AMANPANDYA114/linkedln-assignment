@@ -1,6 +1,5 @@
 
 
-
 import React, { useState, useEffect } from 'react';
 import CalendarFilter from './CalendarFilter';
 import NameFilter from './NameFilter';

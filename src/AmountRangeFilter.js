@@ -33,11 +33,11 @@ const AmountRangeFilter = ({ onChange, sendDataToParent }) => {
 
   const handleAmountChange = (e) => {
     const value = e.target.value;
-    setAmount(value); // Update input field value
+    setAmount(value); 
     onChange({ amountRange: { min: value, max: value } });
     sendDataToParent(value);
 
-    // Filter suggestions based on the input value
+
     const filteredSuggestions = jsonData
       .filter(item => item.amount.toString().startsWith(value))
       .map(item => item.amount);
