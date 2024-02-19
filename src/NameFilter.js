@@ -1,7 +1,10 @@
+
+
+
 import React, { useState } from 'react';
 import jsonData from './jsonData';
 
-const NameFilter = ({ onChange }) => {
+const NameFilter = ({ onChange}) => {
   const [name, setName] = useState('');
   const [nameSuggestions, setNameSuggestions] = useState([]);
 
@@ -12,7 +15,6 @@ const NameFilter = ({ onChange }) => {
   };
 
   const handleNameClick = () => {
-  
     setNameSuggestions(jsonData.map(item => item.name));
   };
 
@@ -24,13 +26,15 @@ const NameFilter = ({ onChange }) => {
 
   return (
     <div>
-      <label htmlFor="name">Name:</label>
-      <input type="text" id="name" value={name || ''} onChange={handleNameChange} onClick={handleNameClick} />
-      <div>
+      <label htmlFor="name" className='n'>Name:--</label>
+      <select id="name" value={name} onChange={handleNameChange} onClick={handleNameClick}>
+      <option value="">Select Name</option>
         {nameSuggestions.map((suggestion, index) => (
-          <div key={index} onClick={() => handleSuggestionClick(suggestion)}>{suggestion}</div>
+        
+          <option key={index} onClick={() => handleSuggestionClick(suggestion)}>{suggestion}</option>
         ))}
-      </div>
+      </select>
+     <li>{name}</li> 
     </div>
   );
 };

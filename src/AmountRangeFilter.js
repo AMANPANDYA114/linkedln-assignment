@@ -1,79 +1,43 @@
 
+import React, { useState } from 'react';
+import jsonData from './jsonData';
 
-import React, { useState, useEffect, useRef } from 'react';
-import jsonData from './jsonData'; 
-
-const AmountRangeFilter = ({ onChange, sendDataToParent }) => {
+const AmountRangeFilter = ({ onChange }) => {
   const [amount, setAmount] = useState('');
   const [amountSuggestions, setAmountSuggestions] = useState([]);
-  const [isInputFocused, setIsInputFocused] = useState(false); 
-  const inputRef = useRef(null); 
-
-  useEffect(() => {
-
-    setAmountSuggestions([]);
-  }, []);
-
-  useEffect(() => {
- 
-    const handleOutsideClick = (event) => {
-      if (inputRef.current && !inputRef.current.contains(event.target)) {
-        setAmountSuggestions([]); 
-      }
-    };
-
-   
-    document.addEventListener('click', handleOutsideClick);
-
-   
-    return () => {
-      document.removeEventListener('click', handleOutsideClick);
-    };
-  }, []);
 
   const handleAmountChange = (e) => {
     const value = e.target.value;
-    setAmount(value); 
-    onChange({ amountRange: { min: value, max: value } });
-    sendDataToParent(value);
+    setAmount(value);
+    onChange({ amount: value });
+  };
 
-
-    const filteredSuggestions = jsonData
-      .filter(item => item.amount.toString().startsWith(value))
-      .map(item => item.amount);
-    const uniqueAmounts = [...new Set(filteredSuggestions)];
-    setAmountSuggestions(uniqueAmounts);
+  const handleAmountClick = () => {
+    
+    const filteredSuggestions = jsonData.filter(item => item.amount >= 100 && item.amount <= 200);
+    setAmountSuggestions(filteredSuggestions.map(item => item.amount));
   };
 
   const handleSuggestionClick = (value) => {
     setAmount(value); 
-    onChange({ amountRange: { min: value, max: value } });
-    sendDataToParent(value);
+    onChange({ amount: value });
     setAmountSuggestions([]); 
   };
 
   return (
     <div>
-      <label htmlFor="amount">Amount:</label>
-      <input
-        type="number"
-        id="amount"
-        value={amount}
-        onChange={handleAmountChange}
-        onFocus={() => setIsInputFocused(true)} 
-        onBlur={() => setIsInputFocused(false)} 
-        ref={inputRef} 
-      />
-      <div>
-   
-        {amountSuggestions.length > 0 && amountSuggestions.map((suggestion, index) => (
-          <div key={index} onClick={() => handleSuggestionClick(suggestion)}>
-            {suggestion}
-          </div>
+      <label htmlFor="amount">Amount:--   </label>
+      <select id="amount" value={amount} onChange={handleAmountChange} onClick={handleAmountClick}>
+        <option value="">Select an amount</option>
+        {amountSuggestions.map((suggestion, index) => (
+          <option key={index} onClick={() => handleSuggestionClick(suggestion)}>{suggestion}</option>
         ))}
-      </div>
+      </select>
+      <li>{amount}</li>
     </div>
   );
 };
 
 export default AmountRangeFilter;
+
+
